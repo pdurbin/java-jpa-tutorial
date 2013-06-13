@@ -5,6 +5,7 @@ Vagrant::Config.run do |config|
 
   #config.vm.boot_mode = :gui
   config.vm.share_folder "downloads", "/downloads", "downloads"
+  config.vm.share_folder "authors", "/authors", "authors"
 
   config.vm.customize ["modifyvm", :id, "--memory", 2048]
 

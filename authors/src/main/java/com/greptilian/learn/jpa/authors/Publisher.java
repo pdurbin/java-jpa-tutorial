@@ -16,6 +16,13 @@ public class Publisher {
     @OneToMany(mappedBy = "publisher")
     private List<Book> books;
 
+    public Publisher() {
+    }
+
+    Publisher(String name) {
+        this.name = name;
+    }
+
     public Long getId() {
         return id;
     }

@@ -1,6 +1,7 @@
 package com.greptilian.learn.jpa.authors;
 
 import java.util.List;
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
@@ -13,8 +14,15 @@ public class Author {
     @GeneratedValue
     private Long id;
     String name;
-    @ManyToMany
+    @ManyToMany(cascade = CascadeType.PERSIST)
     private List<Book> books;
+
+    public Author() {
+    }
+
+    Author(String name) {
+        this.name = name;
+    }
 
     public Long getId() {
         return id;

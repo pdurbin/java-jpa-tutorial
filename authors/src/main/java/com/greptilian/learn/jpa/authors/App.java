@@ -1,6 +1,7 @@
 package com.greptilian.learn.jpa.authors;
 
-import java.util.ArrayList;
+import com.sun.corba.se.impl.resolver.SplitLocalResolverImpl;
+import java.util.Arrays;
 import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
@@ -16,43 +17,37 @@ public class App {
 
         em.getTransaction().begin();
 
-        Author author1 = new Author();
-        author1.setName("Ernest Hemingway");
-
-        Book book1 = new Book();
-        book1.setTitle("The Sun Also Rises");
-        book1.setOriginalPublicationYear("1926");
-        Publisher book1publisher = new Publisher();
-        book1publisher.setName("Scribner");
-        em.persist(book1publisher);
-        book1.setPublisher(book1publisher);
-        em.persist(book1);
-
-        Book book2 = new Book();
-        book2.setTitle("A Farewell to Arms");
-        book2.setOriginalPublicationYear("1929");
-        Publisher book2publisher = new Publisher();
-        book2publisher.setName("Scribner");
-        em.persist(book2publisher);
-        book2.setPublisher(book2publisher);
-        em.persist(book2);
-
-        List<Book> author1booklist = new ArrayList<Book>();
-        author1booklist.add(book1);
-        author1booklist.add(book2);
-        author1.setBooks(author1booklist);
-
+        Author author1 = new Author("Ernest Hemingway");
+        Publisher scribner = new Publisher("Scribner");
+        Book author1book1 = new Book("The Sun Also Rises", "1926", scribner);
+        Book author1book2 = new Book("A Farewell to Arms", "1929", scribner);
+        author1.setBooks(Arrays.asList(author1book1, author1book2));
         em.persist(author1);
+
+        Author author2 = new Author("James Joyce");
+        author2.setBooks(Arrays.asList(new Book("Ulysses", "1922", new Publisher("Sylvia Beach"))));
+        em.persist(author2);
 
         em.getTransaction().commit();
 
-        Query query = em.createQuery("SELECT author FROM Author author");
-        List<Author> authors = query.getResultList();
+        Query authorQuery = em.createQuery("SELECT author FROM Author author");
+        List<Author> authors = authorQuery.getResultList();
         for (Author author : authors) {
-            List<Book> books = author.getBooks();
-            for (Book book : books) {
-                System.out.println("\"" + book.getTitle() + "\" by " + author.getName() + " (" + book.getPublisher().getName() + ", " + book.getOriginalPublicationYear() + ")");
+            for (Book book : author.getBooks()) {
+                System.out.println(author.getName() + " wrote \"" + book.getTitle() + "\" in " + book.getOriginalPublicationYear() + " (" + book.getPublisher().getName() + ")");
             }
+        }
+
+        Query bookQuery = em.createQuery("SELECT book from Book book");
+        List<Book> books = bookQuery.getResultList();
+        for (Book book : books) {
+            System.out.println("\"" + book.getTitle() + "\" (" + book.getPublisher().getName() + ", " + book.getOriginalPublicationYear() + ")");
+        }
+
+        Query publisherQuery = em.createQuery("SELECT pub FROM Publisher pub");
+        List<Publisher> pubs = publisherQuery.getResultList();
+        for (Publisher publisher : pubs) {
+            System.out.println("publisher: " + publisher.getName());
         }
 
     }

@@ -1,5 +1,6 @@
 package com.greptilian.learn.jpa.authors;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
@@ -13,8 +14,22 @@ public class Book {
     private Long id;
     String title;
     String originalPublicationYear;
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.PERSIST)
     private Publisher publisher;
+
+    public Book() {
+    }
+
+    Book(String title, String year) {
+        this.title = title;
+        this.originalPublicationYear = year;
+    }
+
+    Book(String title, String year, Publisher publisher) {
+        this.title = title;
+        this.originalPublicationYear = year;
+        this.publisher = publisher;
+    }
 
     public Long getId() {
         return id;

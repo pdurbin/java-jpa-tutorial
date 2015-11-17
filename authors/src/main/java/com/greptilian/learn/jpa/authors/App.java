@@ -10,7 +10,7 @@ import javax.persistence.Query;
 public class App {
 
     public static void main(String[] args) {
-        System.out.println("JPA tutorial example using derby memory...");
+        System.out.println("JPA tutorial example using sqlite...");
         EntityManagerFactory factory = Persistence.createEntityManagerFactory("authorsDatabase");
         EntityManager em = factory.createEntityManager();
 

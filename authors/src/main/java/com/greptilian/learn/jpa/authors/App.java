@@ -5,7 +5,7 @@ import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
-import javax.persistence.Query;
+import javax.persistence.TypedQuery;
 
 public class App {
 
@@ -46,7 +46,7 @@ public class App {
 
         em.getTransaction().commit();
 
-        Query query = em.createQuery("SELECT author FROM Author author");
+        TypedQuery<Author> query = em.createQuery("SELECT OBJECT(o) FROM Author AS o", Author.class);
         List<Author> authors = query.getResultList();
         for (Author author : authors) {
             List<Book> books = author.getBooks();
